@@ -27,6 +27,7 @@
   import { GitBranch, WandIcon } from "lucide-svelte";
   import MetricsViewIcon from "../../../components/icons/MetricsViewIcon.svelte";
   import { useRuntimeClient } from "../../../runtime-client/v2";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
   import { createSqlModelFromTable } from "../../connectors/code-utils";
   import {
     createCanvasDashboardFromTableWithAgent,
@@ -188,12 +189,12 @@
 
 <NavigationMenuItem onclick={viewGraph}>
   <GitBranch slot="icon" size="14px" />
-  View DAG graph
+  {m.source_menu_view_dag_graph()}
 </NavigationMenuItem>
 
 <NavigationMenuItem onclick={handleCreateModel}>
   <Model slot="icon" />
-  Create new model
+  {m.source_menu_create_model()}
 </NavigationMenuItem>
 
 <NavigationMenuItem
@@ -202,17 +203,17 @@
 >
   <MetricsViewIcon slot="icon" />
   <div class="flex gap-x-2 items-center">
-    Generate Metrics View
+    {m.source_menu_generate_metrics_view()}
     {#if $ai}
-      with AI
+      {m.add_data_with_ai()}
       <WandIcon class="w-3 h-3" />
     {/if}
   </div>
   <svelte:fragment slot="description">
     {#if $sourceHasError}
-      Source has errors
+      {m.source_menu_has_errors()}
     {:else if !sourceIsIdle}
-      Source is being ingested
+      {m.source_menu_ingesting()}
     {/if}
   </svelte:fragment>
 </NavigationMenuItem>
@@ -223,17 +224,17 @@
 >
   <CanvasIcon slot="icon" />
   <div class="flex gap-x-2 items-center">
-    Generate Canvas Dashboard
+    {m.source_menu_generate_canvas_dashboard()}
     {#if $ai}
-      with AI
+      {m.add_data_with_ai()}
       <WandIcon class="w-3 h-3" />
     {/if}
   </div>
   <svelte:fragment slot="description">
     {#if $sourceHasError}
-      Source has errors
+      {m.source_menu_has_errors()}
     {:else if !sourceIsIdle}
-      Source is being ingested
+      {m.source_menu_ingesting()}
     {/if}
   </svelte:fragment>
 </NavigationMenuItem>
@@ -244,29 +245,29 @@
 >
   <ExploreIcon slot="icon" />
   <div class="flex gap-x-2 items-center">
-    Generate Explore Dashboard
+    {m.source_menu_generate_explore_dashboard()}
     {#if $ai}
-      with AI
+      {m.add_data_with_ai()}
       <WandIcon class="w-3 h-3" />
     {/if}
   </div>
   <svelte:fragment slot="description">
     {#if $sourceHasError}
-      Source has errors
+      {m.source_menu_has_errors()}
     {:else if !sourceIsIdle}
-      Source is being ingested
+      {m.source_menu_ingesting()}
     {/if}
   </svelte:fragment>
 </NavigationMenuItem>
 
 <NavigationMenuItem onclick={onRefreshSource}>
   <RefreshIcon slot="icon" />
-  Refresh source
+  {m.source_menu_refresh()}
 </NavigationMenuItem>
 
 {#if isLocalFileConnector}
   <NavigationMenuItem onclick={onReplaceSource}>
     <Import slot="icon" />
-    Replace source with uploaded file
+    {m.source_menu_replace_uploaded_file()}
   </NavigationMenuItem>
 {/if}
