@@ -2,6 +2,7 @@
   import Spinner from "@rilldata/web-common/features/entity-management/Spinner.svelte";
   import { EntityStatus } from "@rilldata/web-common/features/entity-management/types";
   import type { V1ParseError } from "@rilldata/web-common/runtime-client";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   export let parseErrors: V1ParseError[] = [];
   export let parserReconcileError: string | undefined = undefined;
@@ -12,7 +13,7 @@
 
 <section class="flex flex-col gap-y-4">
   <h3 class="parse-errors-header">
-    Parse Errors
+    {m.status_parse_errors_title()}
     {#if parseErrors.length > 0}
       <span class="parse-errors-badge">{parseErrors.length}</span>
     {/if}
@@ -22,7 +23,7 @@
     <Spinner status={EntityStatus.Running} size={"16px"} />
   {:else if isError}
     <div class="text-red-500">
-      Error loading parse errors: {errorMessage}
+      {m.status_error_loading_resources({ error: errorMessage })}
     </div>
   {:else if parseErrors.length > 0}
     <div class="parse-errors-list">
@@ -40,7 +41,7 @@
       {parserReconcileError}
     </div>
   {:else}
-    <p class="text-sm text-fg-secondary">No parse errors</p>
+    <p class="text-sm text-fg-secondary">{m.status_no_parse_errors()}</p>
   {/if}
 </section>
 

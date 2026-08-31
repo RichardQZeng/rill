@@ -8,6 +8,7 @@
   } from "@rilldata/web-common/features/projects/status/tables/utils";
   import { writable } from "svelte/store";
   import OverviewCard from "@rilldata/web-common/features/projects/status/overview/OverviewCard.svelte";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   const runtimeClient = useRuntimeClient();
 
@@ -45,9 +46,9 @@
     ($tablesList.isLoading && $tablesList.isFetching);
 </script>
 
-<OverviewCard title="Tables" viewAllHref="/status/tables">
+<OverviewCard title={m.status_nav_tables()} viewAllHref="/status/tables">
   {#if isLoading}
-    <p class="text-sm text-fg-secondary">Loading tables...</p>
+    <p class="text-sm text-fg-secondary">{m.status_loading_tables_short()}</p>
   {:else if filteredTables.length > 0}
     <div class="chips">
       <a href="/status/tables?type=table" class="chip">
@@ -55,7 +56,7 @@
           >{tableCount}{hasMore && tableCount > 0 ? "+" : ""}</span
         >
         <span class="text-fg-secondary"
-          >{tableCount === 1 ? "Table" : "Tables"}</span
+          >{m.status_table_label({ count: tableCount })}</span
         >
       </a>
       <a href="/status/tables?type=view" class="chip">
@@ -63,12 +64,12 @@
           >{viewCount}{hasMore && viewCount > 0 ? "+" : ""}</span
         >
         <span class="text-fg-secondary"
-          >{viewCount === 1 ? "View" : "Views"}</span
+          >{m.status_view_label({ count: viewCount })}</span
         >
       </a>
     </div>
   {:else}
-    <p class="text-sm text-fg-secondary">No tables found.</p>
+    <p class="text-sm text-fg-secondary">{m.status_no_tables()}</p>
   {/if}
 </OverviewCard>
 

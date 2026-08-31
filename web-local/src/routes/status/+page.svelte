@@ -23,6 +23,7 @@
   import { createLocalServiceGetVersion } from "@rilldata/web-common/runtime-client/local-service";
   import { goto } from "$app/navigation";
   import TablesSection from "../../features/tables/TablesSection.svelte";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   const runtimeClient = useRuntimeClient();
 
@@ -78,37 +79,36 @@
 <!-- Project Section -->
 <div class="section">
   <div class="section-header">
-    <h3 class="section-title">Project</h3>
+    <h3 class="section-title">{m.status_project()}</h3>
   </div>
   <div class="info-grid">
     <div class="info-row">
-      <span class="info-label">Status</span>
+      <span class="info-label">{m.status_label_status()}</span>
       <span class="info-value flex items-center gap-2">
         {#if $projectParserQuery.isLoading || $resourcesQuery.isLoading}
           <span class="status-dot bg-gray-400"></span>
-          Loading
+          {m.common_loading()}
         {:else if totalErrors > 0}
           <span class="status-dot bg-red-500"></span>
-          {totalErrors}
-          {totalErrors === 1 ? "error" : "errors"}
+          {m.status_error_count({ count: totalErrors })}
         {:else}
           <span class="status-dot bg-green-500"></span>
-          Running
+          {m.status_running()}
         {/if}
       </span>
     </div>
     <div class="info-row">
-      <span class="info-label">Environment</span>
-      <span class="info-value">Development</span>
+      <span class="info-label">{m.status_label_environment()}</span>
+      <span class="info-value">{m.status_development()}</span>
     </div>
     {#if version}
       <div class="info-row">
-        <span class="info-label">Runtime</span>
+        <span class="info-label">{m.status_label_runtime()}</span>
         <span class="info-value font-mono text-xs">{version}</span>
       </div>
     {/if}
     <div class="info-row">
-      <span class="info-label">OLAP Engine</span>
+      <span class="info-label">{m.status_label_olap_engine()}</span>
       <span class="info-value">
         {getOlapEngineLabel(
           instance?.olapConnector
@@ -118,11 +118,11 @@
       </span>
     </div>
     <div class="info-row">
-      <span class="info-label">AI Connector</span>
+      <span class="info-label">{m.status_label_ai_connector()}</span>
       <span class="info-value">
         {instance?.aiConnector && instance.aiConnector !== "admin"
           ? formatConnectorName(instance.aiConnector)
-          : "Rill Managed"}
+          : m.status_rill_managed()}
       </span>
     </div>
   </div>

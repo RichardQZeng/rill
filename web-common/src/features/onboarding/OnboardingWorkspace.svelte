@@ -22,6 +22,7 @@
   import { fileArtifacts } from "@rilldata/web-common/features/entity-management/file-artifacts.ts";
   import ConnectYourDataWidget from "@rilldata/web-common/features/add-data/ConnectYourDataWidget.svelte";
   import AddDataModal from "@rilldata/web-common/features/add-data/AddDataModal.svelte";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   const runtimeClient = useRuntimeClient();
 
@@ -64,7 +65,7 @@
       }}
     />
 
-    <div class="my-auto text-gray-400 text-base">or</div>
+    <div class="my-auto text-gray-400 text-base">{m.onboarding_or()}</div>
 
     <div class="onboarding-cta-container">
       <GenerateSampleData type="home" />
@@ -77,7 +78,7 @@
           this={resourceIconMapping[ResourceKind.Model]}
           size="14px"
         />
-        Create blank model
+        {m.onboarding_create_blank_model()}
       </button>
       <button
         on:click={() =>
@@ -88,14 +89,14 @@
           this={resourceIconMapping[ResourceKind.MetricsView]}
           size="14px"
         />
-        Create a metrics view
+        {m.onboarding_create_metrics_view()}
       </button>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
           {#snippet child({ props })}
             <button class="onboarding-cta" {...props}>
               <PresentationIcon size="16px" />
-              Try demo projects
+              {m.onboarding_try_demo_projects()}
             </button>
           {/snippet}
         </DropdownMenu.Trigger>
@@ -117,12 +118,14 @@
   </div>
 
   <div class="flex flex-col mx-auto w-fit gap-y-2 text-xs text-slate-500">
-    <div class="font-semibold text-center">Tips for data workflow in rill</div>
+    <div class="font-semibold text-center">
+      {m.onboarding_workflow_tips_title()}
+    </div>
     <ul class="list-decimal">
-      <li>Import data – Add or drag files (Parquet, NDJSON, CSV).</li>
-      <li>Model sources – Combine and shape data with SQL.</li>
-      <li>Define metrics – Create metrics and dimensions.</li>
-      <li>Explore insights – Visualize data in interactive dashboards.</li>
+      <li>{m.onboarding_workflow_tip_import_data()}</li>
+      <li>{m.onboarding_workflow_tip_model_sources()}</li>
+      <li>{m.onboarding_workflow_tip_define_metrics()}</li>
+      <li>{m.onboarding_workflow_tip_explore_insights()}</li>
     </ul>
   </div>
 </div>

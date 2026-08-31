@@ -2,6 +2,7 @@
   import { resourceIconMapping } from "@rilldata/web-common/features/entity-management/resource-icon-mapping";
   import { pluralizeKind } from "@rilldata/web-common/features/resources/overview-utils";
   import type { ResourceCount } from "@rilldata/web-common/features/resources/overview-utils";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   export let resourceCounts: ResourceCount[];
   export let onViewAll: () => void;
@@ -11,8 +12,9 @@
 {#if resourceCounts.length > 0}
   <section class="section">
     <div class="section-header">
-      <h3 class="section-title">Resources</h3>
-      <button class="view-all" onclick={onViewAll}>View all</button>
+      <h3 class="section-title">{m.status_nav_resources()}</h3>
+      <button class="view-all" onclick={onViewAll}>{m.status_view_all()}</button
+      >
     </div>
     <div class="resource-chips">
       {#each resourceCounts as { kind, label, count } (kind)}

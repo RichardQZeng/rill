@@ -11,6 +11,8 @@
   } from "@rilldata/web-common/runtime-client/local-service";
   import Spinner from "@rilldata/web-common/features/entity-management/Spinner.svelte";
   import ThemeToggle from "@rilldata/web-common/features/themes/ThemeToggle.svelte";
+  import LanguageSwitcher from "@rilldata/web-common/components/i18n/LanguageSwitcher.svelte";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   $: user = createLocalServiceGetCurrentUser({
     query: {
@@ -57,7 +59,7 @@
   <DropdownMenu.Root>
     <DropdownMenu.Trigger
       class="flex-none w-7"
-      aria-label="Avatar logged {loggedIn ? 'in' : 'out'}"
+      aria-label={loggedIn ? m.avatar_logged_in() : m.avatar_logged_out()}
     >
       {#if loggedIn && !photoUrlErrored && $user.data && $metadata.data}
         <Avatar
@@ -71,6 +73,7 @@
     </DropdownMenu.Trigger>
     <DropdownMenu.Content class="p-1">
       <ThemeToggle />
+      <LanguageSwitcher />
       <DropdownMenu.Separator />
 
       <DropdownMenu.Item
@@ -78,7 +81,7 @@
         target="_blank"
         rel="noreferrer noopener"
       >
-        Documentation
+        {m.avatar_documentation()}
       </DropdownMenu.Item>
       <DropdownMenu.Separator />
 
@@ -87,21 +90,21 @@
         target="_blank"
         rel="noreferrer noopener"
       >
-        Join us on Discord
+        {m.avatar_join_discord()}
       </DropdownMenu.Item>
 
       {#if loggedIn}
         <DropdownMenu.Item onclick={handlePylon}>
-          Contact Rill support
+          {m.avatar_contact_support()}
         </DropdownMenu.Item>
         <DropdownMenu.Separator />
         <DropdownMenu.Item href={logoutUrl} rel="external">
-          Logout
+          {m.avatar_logout()}
         </DropdownMenu.Item>
       {:else}
         <DropdownMenu.Separator />
         <DropdownMenu.Item href={loginUrl} rel="external">
-          Log in / Sign up
+          {m.auth_log_in_sign_up()}
         </DropdownMenu.Item>
       {/if}
     </DropdownMenu.Content>

@@ -37,9 +37,9 @@ describe("LanguageSwitcher", () => {
   it("calls setLocale when a different locale is selected", async () => {
     render(LanguageSwitcher);
 
-    const esButton = screen.getByText("Español");
-    await fireEvent.click(esButton);
+    const zhCnButton = screen.getByText("Simplified Chinese");
+    await fireEvent.click(zhCnButton);
 
-    expect(setLocale).toHaveBeenCalledWith("es");
+    expect(setLocale).toHaveBeenCalledWith("zh-CN");
   });
 });

@@ -1,0 +1,30 @@
+services:
+  rill:
+    image: rill-localized:dev
+    build:
+      context: .
+      dockerfile: Dockerfile.rill-test
+    container_name: rill-test
+    command:
+      - start
+      - .
+      - --no-open
+      - --pull-env=false
+      - --env
+      - OPENCODE_LLM_PROXY_TOKEN=${OPENCODE_LLM_PROXY_TOKEN:?Set OPENCODE_LLM_PROXY_TOKEN before starting Rill}
+      - --env
+      - ERP321_RILL_READER_PASSWORD=${ERP321_RILL_READER_PASSWORD:?Start with HomeBI's .env.erp321-local file}
+    working_dir: /project
+    ports:
+      - "127.0.0.1:9009:9009"
+    volumes:
+      - ./web-common/tests/projects/openrtb:/project
+    networks:
+      - default
+      - homebi
+    restart: unless-stopped
+
+networks:
+  homebi:
+    external: true
+    name: home-bi-local-erp

@@ -2,19 +2,20 @@
   import { GeneratingMessage } from "@rilldata/web-common/components/generating-message";
   import { generatingSampleData } from "@rilldata/web-common/features/sample-data/generate-sample-data.ts";
   import OnboardingWorkspace from "@rilldata/web-common/features/onboarding/OnboardingWorkspace.svelte";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
   import type { LayoutData } from "../$types";
 
   export let data: LayoutData;
 </script>
 
 <svelte:head>
-  <title>Rill Developer</title>
+  <title>{m.footer_rill_developer()}</title>
 </svelte:head>
 
 <div class="flex size-full overflow-hidden bg-surface-subtle">
   {#if data.initialized}
     {#if $generatingSampleData}
-      <GeneratingMessage title="Generating your sample data..." />
+      <GeneratingMessage title={m.workspace_generating_sample_data()} />
     {:else}
       <OnboardingWorkspace />
     {/if}

@@ -129,10 +129,17 @@
     searchText = "";
   }
 
+  function statusLabel(status: string) {
+    if (status === "error") return m.status_filter_error();
+    if (status === "warn") return m.status_filter_warn();
+    if (status === "ok") return m.status_filter_ok();
+    return status;
+  }
+
   const columns: ColumnDef<V1Resource, any>[] = [
     {
       accessorKey: "title",
-      header: "Type",
+      header: m.status_column_type(),
       accessorFn: (row) => row.meta?.name?.kind,
       cell: ({ row }) =>
         renderComponent(ResourceTypeBadge, {
@@ -141,7 +148,7 @@
     },
     {
       accessorFn: (row) => row.meta?.name?.name,
-      header: "Name",
+      header: m.status_column_name(),
       cell: ({ getValue }) =>
         renderComponent(NameCell, {
           name: getValue() as string,
@@ -149,7 +156,7 @@
     },
     {
       accessorFn: (row) => row.meta?.reconcileStatus,
-      header: "Status",
+      header: m.status_label_status(),
       sortingFn: (rowA, rowB) =>
         getStatusPriority(rowB.original.meta?.reconcileStatus) -
         getStatusPriority(rowA.original.meta?.reconcileStatus),
@@ -166,7 +173,7 @@
     },
     {
       accessorFn: (row) => row.meta?.stateUpdatedOn,
-      header: "Last refresh",
+      header: m.status_column_last_refresh(),
       sortDescFirst: true,
       cell: (info) =>
         renderComponent(RefreshCell, {
@@ -175,7 +182,7 @@
     },
     {
       accessorFn: (row) => row.meta?.reconcileOn,
-      header: "Next refresh",
+      header: m.status_column_next_refresh(),
       cell: (info) =>
         renderComponent(RefreshCell, {
           date: info.getValue() as string,
@@ -277,13 +284,10 @@
           {#if selectedStatuses.length === 0}
             {m.status_all_statuses()}
           {:else if selectedStatuses.length === 1}
-            {statusFilters.find((s) => s.value === selectedStatuses[0])
-              ?.label ?? selectedStatuses[0]}
+            {statusLabel(selectedStatuses[0])}
           {:else}
             {m.status_levels_selected({
-              first:
-                statusFilters.find((s) => s.value === selectedStatuses[0])
-                  ?.label ?? selectedStatuses[0],
+              first: statusLabel(selectedStatuses[0]),
               count: selectedStatuses.length - 1,
             })}
           {/if}
@@ -300,7 +304,7 @@
             checked={selectedStatuses.includes(status.value)}
             onCheckedChange={() => toggleStatus(status.value)}
           >
-            {status.label}
+            {statusLabel(status.value)}
           </DropdownMenu.CheckboxItem>
         {/each}
       </DropdownMenu.Content>

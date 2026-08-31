@@ -18,6 +18,7 @@
   } from "@rilldata/web-common/metrics/initMetrics";
   import { isDeployPage } from "@rilldata/web-common/layout/navigation/route-utils";
   import { previewModeStore } from "@rilldata/web-common/layout/preview-mode-store";
+  import { initializeI18n } from "@rilldata/web-common/lib/i18n";
   import { LOCAL_HOST, LOCAL_INSTANCE_ID } from "../lib/runtime-client";
   import RuntimeProvider from "@rilldata/web-common/runtime-client/v2/RuntimeProvider.svelte";
   import type { Query } from "@tanstack/query-core";
@@ -36,6 +37,8 @@
   export let data: LayoutData;
 
   const { deploy } = featureFlags;
+
+  initializeI18n();
 
   queryClient.getQueryCache().config.onError = (error: unknown, query: Query) =>
     errorEventHandler?.requestErrorEventHandler(error, query);

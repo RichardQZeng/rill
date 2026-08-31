@@ -1,0 +1,12 @@
+.git
+.playwright-mcp
+node_modules
+**/node_modules
+rill
+coverage
+dev-project
+web-admin/build
+web-local/build
+web-admin/test-results
+web-local/test-results
+web-common/tests/projects

@@ -1,15 +1,16 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import ContentContainer from "@rilldata/web-common/components/layout/ContentContainer.svelte";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   const navItems = [
-    { label: "Overview", route: "/status" },
-    { label: "Resources", route: "/status/resources" },
-    { label: "Tables", route: "/status/tables" },
+    { label: () => m.status_nav_overview(), route: "/status" },
+    { label: () => m.status_nav_resources(), route: "/status/resources" },
+    { label: () => m.status_nav_tables(), route: "/status/tables" },
   ];
 </script>
 
-<ContentContainer title="Status" maxWidth={1100}>
+<ContentContainer title={m.nav_status()} maxWidth={1100}>
   <div class="container flex-col md:flex-row">
     <nav class="nav-items" style:min-width="180px">
       {#each navItems as { label, route } (route)}
@@ -21,7 +22,7 @@
               route !== "/status") ||
             (route === "/status" && $page.url.pathname === "/status")}
         >
-          <span class="text-fg-primary">{label}</span>
+          <span class="text-fg-primary">{label()}</span>
         </a>
       {/each}
     </nav>

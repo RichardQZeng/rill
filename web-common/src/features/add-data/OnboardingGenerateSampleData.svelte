@@ -6,6 +6,7 @@
   import { object, string } from "yup";
   import { useRuntimeClient } from "@rilldata/web-common/runtime-client/v2";
   import { Button } from "@rilldata/web-common/components/button";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   export let open = false;
   export let onGenerate: () => void;
@@ -17,11 +18,11 @@
   const schema = yup(
     object({
       prompt: string()
-        .required("Please describe your data")
-        .min(10, "Please provide more detail (at least 10 characters)"),
+        .required(m.welcome_sample_data_required())
+        .min(10, m.welcome_sample_data_minimum_detail()),
     }),
   );
-  const initialValues = { prompt: "Generate a model with mock data for: " };
+  const initialValues = { prompt: m.welcome_sample_data_prompt() };
   const superFormInstance = superForm(defaults(initialValues, schema), {
     SPA: true,
     validators: schema,
@@ -50,7 +51,7 @@
 <div class="container">
   <div class="header">
     <SparklesIcon size="16px" class="rotate-90" />
-    <span>Generate sample data</span>
+    <span>{m.welcome_sample_data_generate()}</span>
   </div>
 
   <form
@@ -66,11 +67,16 @@
       class="prompt-input"
       bind:value={$form.prompt}
       class:empty={$form.prompt.length === 0}
-      placeholder={`E.g. "e-commerce transactions"`}
+      placeholder={m.welcome_sample_data_placeholder()}
       onkeydown={handleKeydown}
     ></textarea>
     <div class="absolute right-3 bottom-3">
-      <Button type="ghost" ariaLabel="Send message" onClick={submit} compact>
+      <Button
+        type="ghost"
+        ariaLabel={m.chat_send_message()}
+        onClick={submit}
+        compact
+      >
         <ArrowUpIcon class="h-4 w-4 text-accent-secondary-action" />
       </Button>
     </div>

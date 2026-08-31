@@ -7,6 +7,7 @@
     MetricsEventSpace,
   } from "@rilldata/web-common/metrics/service/MetricsTypes.ts";
   import { BehaviourEventMedium } from "@rilldata/web-common/metrics/service/BehaviourEventTypes.ts";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   export let data;
 
@@ -17,8 +18,12 @@
 
 <div class="my-auto">
   {#if !isImportStep}
-    <div class="text-base font-semibold text-fg-secondary">Getting started</div>
-    <div class="text-3xl font-bold text-fg-accent">Connect your data</div>
+    <div class="text-base font-semibold text-fg-secondary">
+      {m.welcome_getting_started()}
+    </div>
+    <div class="text-3xl font-bold text-fg-accent">
+      {m.welcome_connect_data()}
+    </div>
   {/if}
   <div class="w-fit h-fit mt-4">
     {#key data.schema}

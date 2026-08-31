@@ -43,10 +43,9 @@ build, so you rarely need to run `build:i18n` manually during development.
 - Pass interpolation values as a named object: `m.welcome_greeting({ name })`.
 - Override the locale per call when needed: `m.common_cancel({}, { locale: "de" })`.
 
-Locale detection is configured per app in each `vite.config.ts`. `web-local`
-uses `["preferredLanguage", "baseLocale"]` (the browser's preferred language,
-falling back to English); `web-admin` adds a `localStorage` step in front so a
-user's explicit choice persists.
+Locale detection is configured per app in each `vite.config.ts`. Both apps use
+`localStorage` first so an explicit choice persists, followed by the browser's
+preferred language and English as the final fallback.
 
 ## Conventions
 

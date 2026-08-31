@@ -20,6 +20,7 @@
     getFileHref,
     navigateToHome,
   } from "@rilldata/web-common/layout/navigation/editor-routing.ts";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   export let isLocal = false;
   export let onSelect: () => void = () => {};
@@ -103,12 +104,12 @@
       onclick={() => unpackProject()}
       loading={selectedProjectName === EMPTY_PROJECT_TITLE}
       disabled={!!selectedProjectName}
-      label="Start a blank project"
+      label={m.welcome_start_blank_project()}
     >
       <svelte:fragment slot="icon">
         <AddCircleOutline size="16px" />
       </svelte:fragment>
-      <span>Start a blank project</span>
+      <span>{m.welcome_start_blank_project()}</span>
     </ProjectCard>
   </div>
 </section>

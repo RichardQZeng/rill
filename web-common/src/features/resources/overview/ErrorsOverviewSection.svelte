@@ -3,6 +3,7 @@
   import { resourceIconMapping } from "@rilldata/web-common/features/entity-management/resource-icon-mapping";
   import { pluralizeKind } from "@rilldata/web-common/features/resources/overview-utils";
   import type { ResourceCount } from "@rilldata/web-common/features/resources/overview-utils";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   export let parseErrorCount: number;
   export let errorsByKind: ResourceCount[];
@@ -29,7 +30,7 @@
   >
     <div class="section-header">
       <h3 class="section-title flex items-center gap-2">
-        Errors
+        {m.status_errors()}
         <span class="error-badge">{totalErrors}</span>
       </h3>
     </div>
@@ -45,13 +46,13 @@
           >
             <AlertCircleOutline size="12px" />
             <span class="font-medium">{parseErrorCount}</span>
-            <span>Parse error{parseErrorCount !== 1 ? "s" : ""}</span>
+            <span>{m.status_parse_errors({ count: parseErrorCount })}</span>
           </button>
         {:else}
           <span class="error-chip">
             <AlertCircleOutline size="12px" />
             <span class="font-medium">{parseErrorCount}</span>
-            <span>Parse error{parseErrorCount !== 1 ? "s" : ""}</span>
+            <span>{m.status_parse_errors({ count: parseErrorCount })}</span>
           </span>
         {/if}
       {/if}
@@ -85,14 +86,16 @@
 {:else}
   <div class="section">
     <div class="section-header">
-      <h3 class="section-title flex items-center gap-2">Errors</h3>
+      <h3 class="section-title flex items-center gap-2">{m.status_errors()}</h3>
     </div>
     {#if isError}
-      <p class="text-sm text-fg-secondary">Unable to check for errors.</p>
+      <p class="text-sm text-fg-secondary">
+        {m.status_unable_to_check_errors()}
+      </p>
     {:else if isLoading}
-      <p class="text-sm text-fg-secondary">Checking for errors...</p>
+      <p class="text-sm text-fg-secondary">{m.status_checking_errors()}</p>
     {:else}
-      <p class="text-sm text-fg-secondary">No errors detected.</p>
+      <p class="text-sm text-fg-secondary">{m.status_no_errors()}</p>
     {/if}
   </div>
 {/if}

@@ -15,6 +15,7 @@
   } from "@rilldata/web-common/metrics/service/MetricsTypes.ts";
   import { waitUntil } from "@rilldata/web-common/lib/waitUtils.ts";
   import { WelcomeStatus } from "@rilldata/web-common/features/welcome/status.ts";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   onMount(async () => {
     await waitUntil(() => !!behaviourEvent);
@@ -42,7 +43,7 @@
     </div>
 
     <p class="text-base font-normal text-fg-secondary text-center">
-      Or jump right into an example project.
+      {m.welcome_jump_to_example_project()}
     </p>
 
     <ProjectCards isLocal />
