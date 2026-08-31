@@ -14,6 +14,7 @@
     makeFullyQualifiedTableName,
     makeTablePreviewHref,
   } from "../connectors-utils";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   export let driver: string;
   export let connector: string;
@@ -118,8 +119,8 @@
             <ContextButton
               {...props}
               data-testid="more-actions-context-button"
-              tooltipText="More actions"
-              label="{tableId} actions menu trigger"
+              tooltipText={m.connector_explorer_more_actions()}
+              label={m.connector_explorer_table_actions({ table })}
               suppressTooltip={contextMenuOpen}
             >
               <MoreHorizontal />
