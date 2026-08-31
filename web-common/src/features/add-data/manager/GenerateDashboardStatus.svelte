@@ -26,6 +26,7 @@
   import { previewModeStore } from "@rilldata/web-common/layout/preview-mode-store";
   import FeatherCheckCircle from "@rilldata/web-common/components/icons/FeatherCheckCircle.svelte";
   import type { AddDataStateManager } from "@rilldata/web-common/features/add-data/manager/AddDataStateManager.svelte.ts";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   export let config: AddDataConfig;
   export let stateManager: AddDataStateManager;
@@ -39,21 +40,21 @@
   const StepLabels = [
     {
       step: ImportDataStep.CreateModel,
-      pendingLabel: "Ingesting data...",
-      doneLabel: "Ingested data",
-      failedLabel: "Ingesting data failed.",
+      pendingLabel: m.add_data_ingesting_data(),
+      doneLabel: m.add_data_ingested_data(),
+      failedLabel: m.add_data_ingesting_data_failed(),
     },
     {
       step: ImportDataStep.CreateMetricsView,
-      pendingLabel: "Creating Metrics View...",
-      doneLabel: "Created Metrics View",
-      failedLabel: "Creating Metrics View failed.",
+      pendingLabel: m.add_data_creating_metrics_view(),
+      doneLabel: m.add_data_created_metrics_view(),
+      failedLabel: m.add_data_creating_metrics_view_failed(),
     },
     {
       step: ImportDataStep.CreateDashboard,
-      pendingLabel: "Generating dashboard...",
-      doneLabel: "Generated dashboard",
-      failedLabel: "Generating dashboard failed.",
+      pendingLabel: m.add_data_generating_dashboard(),
+      doneLabel: m.add_data_generated_dashboard(),
+      failedLabel: m.add_data_generating_dashboard_failed(),
     },
   ];
   const steps = importAddDataStep.config.importSteps.map(
@@ -143,7 +144,7 @@
   </div>
   <div class="flex flex-col gap-y-2">
     <div class="text-center font-semibold text-[18px]">
-      Creating your dashboard
+      {m.add_data_create_dashboard()}
     </div>
     <div class="flex flex-col gap-y-1 w-fit mx-auto">
       {#each steps as s (s.step)}
@@ -183,7 +184,7 @@
   >
     {#if hasErrored}
       <Button type="secondary" noStroke onClick={cleanupAndBack} large gray>
-        Back
+        {m.common_back()}
       </Button>
       <div class="grow"></div>
     {/if}
@@ -193,10 +194,12 @@
       onClick={skipAndViewProject}
       large
     >
-      Skip and view project
+      {m.add_data_skip_view_project()}
     </Button>
     {#if hasErrored}
-      <Button type="primary" onClick={rerunImport} large>Try again</Button>
+      <Button type="primary" onClick={rerunImport} large
+        >{m.add_data_try_again()}</Button
+      >
     {/if}
   </div>
 </div>

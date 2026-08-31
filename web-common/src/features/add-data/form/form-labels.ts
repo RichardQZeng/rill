@@ -1,6 +1,7 @@
 import type { MultiStepFormSchema } from "@rilldata/web-common/features/templates/schemas/types.ts";
 import { getSchemaButtonLabels } from "@rilldata/web-common/features/templates/schema-utils.ts";
 import { ImportDataStep } from "@rilldata/web-common/features/add-data/manager/steps/types.ts";
+import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
 export type AddDataFormLabels = {
   primaryLoadingCopy: string;
@@ -10,17 +11,17 @@ export type AddDataFormLabels = {
 };
 
 export const defaultFormLabels: AddDataFormLabels = {
-  primaryLoadingCopy: "Saving...",
-  primaryButtonLabel: "Save",
+  primaryLoadingCopy: m.add_data_saving(),
+  primaryButtonLabel: m.add_data_save(),
 
-  yamlPreviewTitle: "YAML Preview",
+  yamlPreviewTitle: m.add_data_yaml_preview(),
 };
 
 const connectorFormLabels: AddDataFormLabels = {
-  primaryLoadingCopy: "Testing connection...",
-  primaryButtonLabel: "Test and Connect",
+  primaryLoadingCopy: m.add_data_testing_connection(),
+  primaryButtonLabel: m.add_data_test_and_connect(),
 
-  yamlPreviewTitle: "Connector preview",
+  yamlPreviewTitle: m.add_data_connector_preview(),
 };
 
 export function getLabelsForConnector(
@@ -37,28 +38,28 @@ export function getLabelsForConnector(
     : connectorFormLabels;
 
   if (values.auth_method === "public") {
-    labels.primaryButtonLabel = "Continue";
+    labels.primaryButtonLabel = m.common_continue();
   }
   return labels;
 }
 
 const importOnlySourceFormLabels: AddDataFormLabels = {
-  primaryLoadingCopy: "Importing data...",
-  primaryButtonLabel: "Import Data",
+  primaryLoadingCopy: m.add_data_importing_data(),
+  primaryButtonLabel: m.add_data_import_data(),
 
-  yamlPreviewTitle: "Model preview",
+  yamlPreviewTitle: m.add_data_model_preview(),
 };
 const generateMetricsViewSourceFormLabels: AddDataFormLabels = {
-  primaryLoadingCopy: "Generating metrics view...",
-  primaryButtonLabel: "Generate metrics with AI",
+  primaryLoadingCopy: m.add_data_generating_metrics_view(),
+  primaryButtonLabel: m.add_data_generate_metrics_view_ai(),
 
-  yamlPreviewTitle: "Model preview",
+  yamlPreviewTitle: m.add_data_model_preview(),
 };
 const importAndGenerateSourceFormLabels: AddDataFormLabels = {
-  primaryLoadingCopy: "Generating dashboard...",
-  primaryButtonLabel: "Generate dashboard with AI",
+  primaryLoadingCopy: m.add_data_generating_dashboard(),
+  primaryButtonLabel: m.add_data_generate_dashboard_ai(),
 
-  yamlPreviewTitle: "Model preview",
+  yamlPreviewTitle: m.add_data_model_preview(),
 };
 
 export function getLabelsForSource(steps: ImportDataStep[]) {

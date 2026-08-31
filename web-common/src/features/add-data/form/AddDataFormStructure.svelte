@@ -28,6 +28,7 @@
     AddDataStep,
   } from "@rilldata/web-common/features/add-data/manager/steps/types.ts";
   import { getFormClass } from "@rilldata/web-common/features/add-data/class-utils.ts";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   export let connectorDriver: V1ConnectorDriver;
   export let schema: MultiStepFormSchema | null;
@@ -202,7 +203,7 @@
         onClick={() => void handleBack()}
         type="tertiary"
       >
-        Back
+        {m.common_back()}
       </Button>
 
       <div class="flex gap-2">
@@ -212,9 +213,9 @@
             type="secondary"
             noStroke
             onClick={onSave}
-            label="Save connector"
+            label={m.add_data_save_connector()}
           >
-            Save and exit
+            {m.add_data_save_and_exit()}
           </Button>
         {/if}
 

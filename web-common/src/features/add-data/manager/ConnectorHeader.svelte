@@ -10,6 +10,7 @@
     isConnectorType,
   } from "@rilldata/web-common/features/add-data/manager/steps/utils.ts";
   import { inferSchemaForConnector } from "@rilldata/web-common/features/entity-management/add/selectors.ts";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   export let config: AddDataConfig;
   export let schemaName: string;
@@ -57,9 +58,11 @@
         options={connectorOptions}
         onChange={onConnectorChange}
         onAddNew={onNewConnector}
-        addNewLabel="+ {connectorInfo.displayName} connector"
+        addNewLabel={m.add_data_add_connector({
+          connector: connectorInfo.displayName,
+        })}
         outline={false}
-        ariaLabel="Select connector"
+        ariaLabel={m.add_data_select_connector()}
       />
     {/if}
   </div>

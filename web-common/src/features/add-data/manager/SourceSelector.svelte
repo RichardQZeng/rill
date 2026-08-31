@@ -10,6 +10,7 @@
   import { getSupportedConnectorInfos } from "@rilldata/web-common/features/add-data/manager/selectors.ts";
   import { useRuntimeClient } from "@rilldata/web-common/runtime-client/v2";
   import { withEditorPrefix } from "@rilldata/web-common/layout/navigation/editor-routing.ts";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   export let config: AddDataConfig;
   export let onSelect: (name: string) => void;
@@ -34,7 +35,9 @@
 
 <div class="source-selector">
   <div class="source-selector-header">
-    <div class="source-selector-header-text">Where is your data?</div>
+    <div class="source-selector-header-text">
+      {m.add_data_where_is_your_data()}
+    </div>
     <div class="grow"></div>
     <div class="w-64">
       <Search bind:value={searchText} />
@@ -55,20 +58,24 @@
               }
             : { onclick: () => onSelect(connector.name) }}
           class="source-selector-cell"
-          aria-label={`Connect to ${connector.name}`}
+          aria-label={m.onboarding_connect_to_connector({
+            connector: connector.name,
+          })}
         >
           <svelte:component this={icon} size="24px" class={className} />
           <span class="source-label">{connector.displayName}</span>
           <ChevronRightIcon size="16px" />
         </svelte:element>
       {:else}
-        <div class="source-selector-no-matches">No matches found</div>
+        <div class="source-selector-no-matches">
+          {m.add_data_no_matches_found()}
+        </div>
       {/each}
     </div>
   </div>
   {#if config.welcomeScreen}
     <div class="source-selector-footer">
-      <Button type="secondary" onClick={onBack}>Back</Button>
+      <Button type="secondary" onClick={onBack}>{m.common_back()}</Button>
     </div>
   {/if}
 </div>
