@@ -30,6 +30,7 @@
   import { getScreenNameFromPage } from "../../file-explorer/telemetry";
   import { getEnvFileStore } from "@rilldata/web-common/features/env-management/env-file-store.ts";
   import { EnvEditSession } from "@rilldata/web-common/features/env-management/env-edit-session.ts";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   export let open = false;
 
@@ -38,19 +39,27 @@
   const envStore = getEnvFileStore();
 
   /** Expected API key prefixes per provider, used for soft validation. */
+  // i18n-ignore: provider brand names must match the API key they describe.
   const API_KEY_PREFIXES: Record<string, { prefix: string; label: string }> = {
+    // i18n-ignore: provider brand name
     claude: { prefix: "sk-ant-", label: "Claude" },
+    // i18n-ignore: provider brand name
     openai: { prefix: "sk-", label: "OpenAI" },
+    // i18n-ignore: provider brand name
     gemini: { prefix: "AIza", label: "Gemini" },
   };
 
+  // i18n-ignore: provider brand names are product identifiers.
   const providerOptions: Array<{
     value: string;
     label: string;
     icon: ComponentType<SvelteComponent>;
   }> = [
+    // i18n-ignore: provider brand name
     { value: "claude", label: "Claude", icon: ClaudeIcon },
+    // i18n-ignore: provider brand name
     { value: "gemini", label: "Gemini", icon: GeminiIcon },
+    // i18n-ignore: provider brand name
     { value: "openai", label: "OpenAI", icon: OpenAIIcon },
   ];
 
@@ -88,11 +97,14 @@
           key.startsWith(spec.prefix),
       );
       if (moreSpecific) {
-        return `This looks like a ${moreSpecific[1].label} API key, not ${expected.label}`;
+        return m.ai_connector_key_looks_like({
+          actual: moreSpecific[1].label,
+          expected: expected.label,
+        });
       }
       return "";
     }
-    return `This doesn't look like a ${expected.label} API key`;
+    return m.ai_connector_key_invalid({ provider: expected.label });
   }
 
   // Reset form fields when dialog opens; also fetch the current AI connector
@@ -160,7 +172,7 @@
       );
       open = false;
     } catch (e) {
-      error = e instanceof Error ? e.message : "Failed to save connector";
+      error = e instanceof Error ? e.message : m.ai_connector_failed_save();
       // Reusing SourceCancel here because there is no dedicated SourceError event.
       // This fires on save failure, not user cancellation.
       behaviourEvent?.fireSourceTriggerEvent(
@@ -177,12 +189,12 @@
 
 <AlertDialog.Root bind:open>
   <AlertDialog.Content>
-    <AlertDialog.Title>Add AI connector</AlertDialog.Title>
+    <AlertDialog.Title>{m.ai_connector_add()}</AlertDialog.Title>
 
     <div class="flex flex-col gap-y-3">
       <div class="flex flex-col gap-y-2">
         <div class="flex items-center justify-between">
-          <span class="text-sm font-medium">Provider</span>
+          <span class="text-sm font-medium">{m.ai_connector_provider()}</span>
           {#if docsUrl}
             <a
               href={docsUrl}
@@ -190,7 +202,7 @@
               target="_blank"
               class="inline-flex items-center gap-1 text-sm text-primary-500 hover:text-primary-600 hover:underline"
             >
-              View documentation
+              {m.ai_connector_view_documentation()}
               <ExternalLinkIcon size="14px" />
             </a>
           {/if}
@@ -213,7 +225,9 @@
                 </span>
               </div>
             {:else}
-              <span class="text-fg-muted">Select a provider</span>
+              <span class="text-fg-muted"
+                >{m.ai_connector_select_provider()}</span
+              >
             {/if}
             <div class="caret transition-transform ml-2">
               <CaretDownIcon size="12px" className="fill-fg-secondary" />
@@ -235,7 +249,7 @@
 
       <Input
         id="ai-connector-api-key"
-        label={apiKeyProp?.title ?? "API Key"}
+        label={apiKeyProp?.title ?? m.ai_connector_api_key()}
         placeholder={apiKeyProp?.["x-placeholder"] ?? ""}
         hint={apiKeyProp?.description ?? ""}
         secret
@@ -247,7 +261,7 @@
 
       <Input
         id="ai-connector-model"
-        label={modelProp?.title ?? "Model"}
+        label={modelProp?.title ?? m.ai_connector_model()}
         placeholder={modelProp?.["x-placeholder"] ?? ""}
         hint={modelProp?.description ?? ""}
         optional
@@ -255,7 +269,7 @@
       />
       {#if existingAiConnector}
         <p class="text-sm text-red-500">
-          This will replace your existing AI connector ({existingAiConnector}).
+          {m.ai_connector_replace_existing({ connector: existingAiConnector })}
         </p>
       {/if}
       {#if error}
@@ -267,7 +281,7 @@
       <AlertDialog.Cancel>
         {#snippet child({ props })}
           <Button {...props} large type="secondary" disabled={saving}
-            >Cancel</Button
+            >{m.common_cancel()}</Button
           >
         {/snippet}
       </AlertDialog.Cancel>
@@ -280,7 +294,7 @@
         type="primary"
         onClick={handleSave}
       >
-        {saving ? "Saving..." : "Save"}
+        {saving ? m.ai_connector_saving() : m.ai_connector_save()}
       </Button>
     </AlertDialog.Footer>
   </AlertDialog.Content>
