@@ -7,6 +7,7 @@
   import { sourceIngestionTracker } from "@rilldata/web-common/features/sources/sources-store";
   import { queryClient } from "@rilldata/web-common/lib/svelte-query/globalQueryClient";
   import { useRuntimeClient } from "@rilldata/web-common/runtime-client/v2";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
   import type { CreateQueryResult } from "@tanstack/svelte-query";
   import { WandIcon } from "lucide-svelte";
   import { BehaviourEventMedium } from "../../../metrics/service/BehaviourEventTypes";
@@ -82,11 +83,10 @@
 
 <AlertDialog.Root open={sourcePath !== null}>
   <AlertDialog.Content>
-    <AlertDialog.Title>Source imported successfully</AlertDialog.Title>
+    <AlertDialog.Title>{m.source_import_success()}</AlertDialog.Title>
 
     <AlertDialog.Description>
-      <span class="font-mono text-fg-primary break-all">{sourceName}</span> has been
-      ingested. What would you like to do next?
+      {m.source_import_description({ source: sourceName })}
     </AlertDialog.Description>
 
     <AlertDialog.Footer>
@@ -95,7 +95,7 @@
           <AlertDialog.Cancel>
             {#snippet child({ props: cancelProps })}
               <Button {...cancelProps} onClick={goToSource} type="secondary">
-                View this source
+                {m.add_data_view_source()}
               </Button>
             {/snippet}
           </AlertDialog.Cancel>
@@ -106,10 +106,10 @@
             onClick={generateMetrics}
             type="primary"
           >
-            Generate dashboard
+            {m.add_data_generate_dashboard()}
 
             {#if $ai}
-              with AI
+              {m.add_data_with_ai()}
               <WandIcon class="w-3 h-3" />
             {/if}
           </Button>

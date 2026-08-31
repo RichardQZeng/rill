@@ -1,17 +1,17 @@
 <script lang="ts">
   import type { V1ConnectorDriver } from "@rilldata/web-common/runtime-client";
   import { ExternalLinkIcon } from "lucide-svelte";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
 
   export let connector: V1ConnectorDriver;
 </script>
 
 <div>
   <div class="text-sm leading-none font-medium text-fg-secondary mb-4">
-    Help
+    {m.source_help()}
   </div>
   <div class="text-sm leading-normal font-medium text-fg-muted mb-2">
-    Need help connecting to {connector.displayName}? Check out our documentation
-    for detailed instructions.
+    {m.source_help_connecting({ connector: connector.displayName })}
   </div>
   <span class="flex flex-row items-center gap-2 group">
     <a
@@ -21,20 +21,20 @@
       target="_blank"
       class="text-sm leading-normal text-primary-500 hover:text-primary-600 font-medium group-hover:underline break-all"
     >
-      How to connect to {connector.displayName}
+      {m.source_help_connect({ connector: connector.displayName })}
     </a>
     <ExternalLinkIcon size="16px" color="#6366F1" />
   </span>
   {#if connector.displayName === "DuckDB" || connector.displayName === "SQLite"}
     <div class="mt-8">
       <div class="text-sm leading-none font-medium text-fg-secondary mb-4">
-        Additional Information
+        {m.source_additional_information()}
       </div>
 
       <div class="text-sm leading-normal font-medium text-fg-muted mb-2">
-        External {connector.displayName} files are meant for local development only.
-        They may run fine on your machine, but aren’t reliably supported in production
-        deployments—especially if the file is large (100MB) or outside the data directory.
+        {m.source_external_file_local_only({
+          connector: connector.displayName,
+        })}
       </div>
     </div>
   {/if}
