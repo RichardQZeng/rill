@@ -13,7 +13,7 @@ services:
       - --env
       - OPENCODE_LLM_PROXY_TOKEN=${OPENCODE_LLM_PROXY_TOKEN:?Set OPENCODE_LLM_PROXY_TOKEN before starting Rill}
       - --env
-      - ERP321_RILL_READER_PASSWORD=${ERP321_RILL_READER_PASSWORD:?Start with HomeBI's .env.erp321-local file}
+      - ERP321_HOMEBI_READER_PASSWORD=${ERP321_HOMEBI_READER_PASSWORD:?Set the HomeBI ERP321 reader password before starting Rill}
     working_dir: /project
     ports:
       - "127.0.0.1:9009:9009"
