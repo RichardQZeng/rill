@@ -12,6 +12,7 @@ func TestReadFile(t *testing.T) {
 	// Setup a project with a file and a test session
 	rt, instanceID := testruntime.NewInstanceWithOptions(t, testruntime.InstanceOptions{
 		Files: map[string]string{
+			".env":                  "SECRET=value",
 			"models/test_model.sql": "SELECT 1 AS val",
 		},
 	})
@@ -26,15 +27,19 @@ func TestReadFile(t *testing.T) {
 		require.Equal(t, "SELECT 1 AS val", res.Contents)
 	}
 
-	// Read non-existent file
 	var res *ai.ReadFileResult
-	_, err := s.CallTool(t.Context(), ai.RoleUser, ai.ReadFileName, &res, &ai.ReadFileArgs{Path: "models/non_existent.sql"})
+	_, err := s.CallTool(t.Context(), ai.RoleUser, ai.ReadFileName, &res, &ai.ReadFileArgs{Path: ".env"})
+	require.ErrorContains(t, err, "environment files cannot be read")
+
+	// Read non-existent file
+	res = nil
+	_, err = s.CallTool(t.Context(), ai.RoleUser, ai.ReadFileName, &res, &ai.ReadFileArgs{Path: "models/non_existent.sql"})
 	require.Error(t, err)
 
 	// Reject paths that traverse outside the project directory
 	for _, path := range []string{"../secret.txt", "/../secret.txt", "models/../../secret.txt", "../../../../etc/passwd", "..\\..\\secret.txt"} {
 		res = nil
-		_, err := s.CallTool(t.Context(), ai.RoleUser, ai.ReadFileName, &res, &ai.ReadFileArgs{Path: path})
+		_, err = s.CallTool(t.Context(), ai.RoleUser, ai.ReadFileName, &res, &ai.ReadFileArgs{Path: path})
 		require.ErrorContains(t, err, "must not contain", "path %q", path)
 	}
 }

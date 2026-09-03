@@ -84,7 +84,7 @@ func (t *SearchFiles) Handler(ctx context.Context, args *SearchFilesArgs) (*Sear
 
 	var matches []SearchMatch
 	for _, file := range files {
-		if file.IsDir {
+		if file.IsDir || isEnvironmentFile(file.Path) {
 			continue
 		}
 

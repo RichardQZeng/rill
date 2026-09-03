@@ -2,6 +2,9 @@ package ai
 
 import (
 	"context"
+	"fmt"
+	"path"
+	"strings"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 	"github.com/rilldata/rill/runtime"
@@ -53,6 +56,9 @@ func (t *ReadFile) Handler(ctx context.Context, args *ReadFileArgs) (*ReadFileRe
 		return nil, err
 	}
 	args.Path = path
+	if isEnvironmentFile(path) {
+		return nil, fmt.Errorf("environment files cannot be read by the AI agent")
+	}
 
 	blob, _, err := t.Runtime.GetFile(ctx, s.InstanceID(), args.Path)
 	if err != nil {
@@ -60,4 +66,9 @@ func (t *ReadFile) Handler(ctx context.Context, args *ReadFileArgs) (*ReadFileRe
 	}
 
 	return &ReadFileResult{Contents: blob}, nil
+}
+
+func isEnvironmentFile(filePath string) bool {
+	name := path.Base(filePath)
+	return name == ".env" || strings.HasPrefix(name, ".env.")
 }

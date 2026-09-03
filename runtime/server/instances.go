@@ -330,12 +330,24 @@ func instanceToPB(inst *drivers.Instance, featureFlags map[string]bool, sensitiv
 		pb.AiConnector = aiConnector
 		pb.Connectors = inst.Connectors
 		pb.ProjectConnectors = inst.ProjectConnectors
-		pb.Variables = inst.Variables
-		pb.ProjectVariables = inst.ProjectVariables
+		pb.Variables = redactedVariables(inst.Variables)
+		pb.ProjectVariables = redactedVariables(inst.ProjectVariables)
 		pb.Annotations = inst.Annotations
 	}
 
 	return pb
+}
+
+func redactedVariables(vars map[string]string) map[string]string {
+	if len(vars) == 0 {
+		return nil
+	}
+
+	redacted := make(map[string]string, len(vars))
+	for name := range vars {
+		redacted[name] = "[redacted]"
+	}
+	return redacted
 }
 
 func valOrDefault[T any](ptr *T, def T) T {

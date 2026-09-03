@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"path"
 	"strings"
 
 	runtimev1 "github.com/rilldata/rill/proto/gen/rill/runtime/v1"
@@ -43,6 +44,9 @@ func (s *Server) ListFiles(ctx context.Context, req *runtimev1.ListFilesRequest)
 
 	var entries []*runtimev1.DirEntry
 	for _, file := range files {
+		if isEnvironmentFile(file.Path) {
+			continue
+		}
 		entries = append(entries, &runtimev1.DirEntry{
 			Path:  file.Path,
 			IsDir: file.IsDir,
@@ -75,6 +79,9 @@ func (s *Server) WatchFiles(req *runtimev1.WatchFilesRequest, ss runtimev1.Runti
 			return err
 		}
 		for _, f := range files {
+			if isEnvironmentFile(f.Path) {
+				continue
+			}
 			err = ss.Send(&runtimev1.WatchFilesResponse{
 				Event: runtimev1.FileEvent_FILE_EVENT_WRITE,
 				Path:  f.Path,
@@ -88,6 +95,9 @@ func (s *Server) WatchFiles(req *runtimev1.WatchFilesRequest, ss runtimev1.Runti
 
 	return repo.Watch(ss.Context(), func(events []drivers.WatchEvent) {
 		for _, event := range events {
+			if isEnvironmentFile(event.Path) {
+				continue
+			}
 			err := ss.Send(&runtimev1.WatchFilesResponse{
 				Event: event.Type,
 				Path:  event.Path,
@@ -112,6 +122,9 @@ func (s *Server) GetFile(ctx context.Context, req *runtimev1.GetFileRequest) (*r
 	if !auth.GetClaims(ctx, req.InstanceId).Can(runtime.ReadRepo) {
 		return nil, ErrForbidden
 	}
+	if isEnvironmentFile(req.Path) {
+		return nil, ErrForbidden
+	}
 
 	blob, lastUpdated, err := s.runtime.GetFile(ctx, req.InstanceId, req.Path)
 	if err != nil {
@@ -119,6 +132,11 @@ func (s *Server) GetFile(ctx context.Context, req *runtimev1.GetFileRequest) (*r
 	}
 
 	return &runtimev1.GetFileResponse{Blob: blob, UpdatedOn: timestamppb.New(lastUpdated)}, nil
+}
+
+func isEnvironmentFile(filePath string) bool {
+	name := path.Base(filePath)
+	return name == ".env" || strings.HasPrefix(name, ".env.")
 }
 
 // PutFile implements RuntimeService.
