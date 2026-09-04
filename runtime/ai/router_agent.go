@@ -235,8 +235,9 @@ func promptToTitle(message string) string {
 	title = strings.TrimSpace(title)
 
 	// Truncate to 50 characters.
-	if len(title) > 50 {
-		title = title[:47] + "..."
+	runes := []rune(title)
+	if len(runes) > 50 {
+		title = string(runes[:47]) + "..."
 	}
 
 	// Fallback title if empty.
