@@ -2,6 +2,7 @@
   import { page } from "$app/stores";
   import { tick } from "svelte";
   import { featureFlags } from "@rilldata/web-common/features/feature-flags";
+  import { m } from "@rilldata/web-common/lib/i18n/gen/messages";
   import LocalProjectStatusIndicator from "../../routes/LocalProjectStatusIndicator.svelte";
 
   const { chat } = featureFlags;
@@ -9,11 +10,15 @@
   $: currentPath = $page.url.pathname;
 
   const baseTabs = [
-    { id: "dashboards", label: "Dashboards", path: "/dashboards" },
-    { id: "status", label: "Status", path: "/status" },
+    {
+      id: "dashboards",
+      label: () => m.nav_tab_dashboards(),
+      path: "/dashboards",
+    },
+    { id: "status", label: () => m.nav_tab_status(), path: "/status" },
   ];
 
-  const aiTab = { id: "ai", label: "AI", path: "/ai" };
+  const aiTab = { id: "ai", label: () => m.nav_tab_ai(), path: "/ai" };
 
   $: tabs = $chat ? [baseTabs[0], aiTab, baseTabs[1]] : baseTabs;
 
@@ -51,8 +56,8 @@
         class:selected={activeTab === tab.id}
         bind:this={tabElements[i]}
       >
-        <p data-content={tab.label}>
-          {tab.label}
+        <p data-content={tab.label()}>
+          {tab.label()}
         </p>
         {#if tab.id === "status"}
           <LocalProjectStatusIndicator />
